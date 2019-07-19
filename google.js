@@ -83,7 +83,7 @@ function updateTable() {
     let i;
     for (i = 0; i < values.length; i++) {
       for (var j = 0; j < values[0].length; j++) {
-        table.rows[i].cells[j].innerHTML = values[i][j];
+        table.row[i].cell[j].innerHTML = values[i][j];
       }
     }
 

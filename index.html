@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.2.0/fabric.min.js"></script>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="main.css">
     <title>Battle Tracker</title>
@@ -18,22 +19,17 @@
     <div class="content">
       <div class="column-left">
         <div class="table" id="table"></div>
-        <script src="google.js"></script>
+        <script src="/google.js"></script>
       </div>
 
       <div class="column-right">
-        <script src="zoom.js"></script>
-        <div class="img-zoom-container">
-          <img src="map.jpg" alt="USMA MAP" id="usma_map">
-          <div id="map_zoom" class="img-zoom-result"></div>
-          <script>imageZoom("usma_map", "map_zoom");</script>
-        </div>
+        <canvas id="map_canvas"></canvas>
+        <script src="/map.js"></script>
       </div>
     </div>
 
     <script async defer src="https://apis.google.com/js/api.js"
-      onload="this.onload=function(){};handleClientLoad()"
-      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+      onload="this.onload=handleClientLoad();resizeCanvas();">
     </script>
   </body>
 </html>
