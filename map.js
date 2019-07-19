@@ -43,7 +43,7 @@ canvas.on('mouse:wheel', function(opt) {
 });
 
 // Add map to canvas
-fabric.Image.fromURL('/map.jpg', (img) => {
+fabric.Image.fromURL('map.jpg', (img) => {
   img.set({
     left: 0,
     top: 0
