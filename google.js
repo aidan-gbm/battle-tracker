@@ -73,17 +73,24 @@ function handleSignoutClick(event) {
 
 function updateTable() {
   var table = document.getElementById("battle_table");
+  if (!table) {
+    setTimeout(updateTable, 15*1000);
+    return false;
+  }
   gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: '1aaeyLhODO9V4M-3H5tTeZVYp3AytwXuJIVgY0pkJkmQ',
     range: 'Sheet1!A:D',
   }).then(function(response) {
     var values = response.result.values;
+    var numRows = table.rows.length;
     
     // Populate table
     let i;
     for (i = 0; i < values.length; i++) {
-      for (var j = 0; j < values[0].length; j++) {
-        table.row[i].cell[j].innerHTML = values[i][j];
+      if (i >= table.rows.length) table.insertRow(-1);
+      for (var j = 0; j < 4; j++) {
+        if (!table.rows[i].cells[j]) table.rows[i].insertCell(-1);
+        table.rows[i].cells[j].innerHTML = values[i][j];
       }
     }
 
@@ -93,7 +100,7 @@ function updateTable() {
     }
   });
 
-  setTimeout(updateTable, 30*1000);
+  setTimeout(updateTable, 15*1000);
 }
 
 function buildTable() {
