@@ -51,3 +51,7 @@ tr:nth-child(even) {
   display: block;
   border: 1px solid black;
 }
+
+.unit_menu {
+  margin-top: 10px;
+}
