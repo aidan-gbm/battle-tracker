@@ -32,7 +32,7 @@ fabric.Image.fromURL('assets/map.jpg', function(img) {
 });
 
 // Add unit to canvas
-locations = {"usmaps":{"x": 961,"y": 203},"j2j3": {"x": 977,"y": 263},"bullpond": {"x": 278,"y": 712},"range35": {"x": 722,"y": 456},"range78": {"x": 652,"y": 511},"range11": {"x": 595,"y": 591},"kach": {"x": 982,"y": 170},"usma": {"x": 1144,"y": 249},"buckner": {"x": 443,"y": 624},"lrcmarne": {"x": 503,"y": 613}};
+locations = {"usmaps":{"x": 702,"y": 129},"j2j3": {"x": 714,"y": 168},"bullpond": {"x": 203,"y": 455},"range35": {"x": 527,"y": 291},"range78": {"x": 476,"y": 326},"range11": {"x": 435,"y": 378},"kach": {"x": 717,"y": 108},"usma": {"x": 836,"y": 159},"buckner": {"x": 323,"y": 399},"lrcmarne": {"x": 367,"y": 392}};
 numAdded = {"usmaps":0,"j2j3":0,"bullpond":0,"range35":0,"range78":0,"range11":0,"kach":0,"usma":0,"buckner":0,"lrcmarne":0};
 function addUnit(unit, location, number) {
   let color;
