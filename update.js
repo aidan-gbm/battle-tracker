@@ -1,12 +1,43 @@
-function updateTable() {
-  var table = document.getElementById("battle_table");
-  if (!table) {
-    setTimeout(updateTable, 15*1000);
+function updateNotes() {
+  var list = document.getElementById('notes_list');
+  if (!list || !gapi.client || !gapi.client.sheets) {
+    setTimeout(updateNotes, 1000);
     return false;
   }
   gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: '1aaeyLhODO9V4M-3H5tTeZVYp3AytwXuJIVgY0pkJkmQ',
-    range: 'Sheet1!A:D',
+    range: 'Notes!A2:A'
+  }).then(function(response) {
+    var values = response.result.values;
+
+    // Clear list
+    let i;
+    var oldItems = document.querySelectorAll('li');
+    for (i = 0; i < oldItems.length; i++) {
+      list.removeChild(oldItems[i]);
+    }
+
+    // Populate list
+    var newLen = values.length;
+    for (i = 0; i < newLen; i++) {
+      var li = document.createElement('li');
+      li.innerHTML = values[i][0];
+      list.appendChild(li);
+    }
+  });
+
+  updateTable();
+}
+
+function updateTable() {
+  var table = document.getElementById("battle_table");
+  if (!table) {
+    setTimeout(updateTable, 1000);
+    return false;
+  }
+  gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: '1aaeyLhODO9V4M-3H5tTeZVYp3AytwXuJIVgY0pkJkmQ',
+    range: 'Data!A:D'
   }).then(function(response) {
     var values = response.result.values;
     
@@ -24,6 +55,24 @@ function updateTable() {
     for (i; i < table.rows.length; i++) {
       table.deleteRow(i);
     }
+
+    // Add color
+    for (i = 0; i < values.length; i++) {
+      switch(table.rows[i].cells[0].innerHTML) {
+        case "BN":
+          table.rows[i].style.backgroundColor = 'rgba(0,255,0,.5)';
+          break;
+        case "Anzio":
+          table.rows[i].style.backgroundColor = 'rgba(255,127,0,.5)';
+          break;
+        case "Bastogne":
+          table.rows[i].style.backgroundColor = 'rgba(255,0,0,.5)';
+          break;
+        case "Carentan":
+          table.rows[i].style.backgroundColor = 'rgba(0,0,255,.5)';
+          break;
+      }
+    }
   });
 
   updateMap(table);
@@ -40,5 +89,5 @@ function updateMap(table) {
     );
   }
 
-  //setTimeout(updateTable, 30*1000);
+  setTimeout(updateNotes, 30*1000);
 }

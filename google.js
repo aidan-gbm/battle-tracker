@@ -74,7 +74,7 @@ function handleSignoutClick(event) {
 function buildTable() {
   gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: '1aaeyLhODO9V4M-3H5tTeZVYp3AytwXuJIVgY0pkJkmQ',
-    range: 'Sheet1!A:D',
+    range: 'Data!A:D',
   }).then(function(response) {
     var range = response.result;
     if (range.values.length > 0) {
