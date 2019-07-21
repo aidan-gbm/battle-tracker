@@ -40,5 +40,5 @@ function updateMap(table) {
     );
   }
 
-  setTimeout(updateTable, 30*1000);
+  //setTimeout(updateTable, 30*1000);
 }
