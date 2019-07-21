@@ -32,7 +32,7 @@ fabric.Image.fromURL('assets/map.jpg', function(img) {
 });
 
 // Add unit to canvas
-locations = {"usmaps":{"x": 702,"y": 129},"j2j3": {"x": 714,"y": 168},"bullpond": {"x": 203,"y": 455},"range35": {"x": 527,"y": 291},"range78": {"x": 476,"y": 326},"range11": {"x": 435,"y": 378},"kach": {"x": 717,"y": 108},"usma": {"x": 836,"y": 159},"buckner": {"x": 323,"y": 399},"lrcmarne": {"x": 367,"y": 392}};
+locations = {"usmaps":{"x": .749,"y": .185},"j2j3": {"x": .766,"y": .237},"bullpond": {"x": .225,"y": .639},"range35": {"x": .564,"y": .411},"range78": {"x": .511,"y": .454},"range11": {"x": .466,"y": .519},"kach": {"x": .766,"y": .158},"usma": {"x": .894,"y": .224},"buckner": {"x": .353,"y": .548},"lrcmarne": {"x": .329,"y": .626}};
 numAdded = {"usmaps":0,"j2j3":0,"bullpond":0,"range35":0,"range78":0,"range11":0,"kach":0,"usma":0,"buckner":0,"lrcmarne":0};
 function addUnit(unit, location, number) {
   let color;
@@ -51,21 +51,24 @@ function addUnit(unit, location, number) {
   var coords = [];
   var loc = location.toLowerCase().replace(/[\s+\/]/g,'');
   if (locations.hasOwnProperty(loc)) {
+    var map = canvas.item(0);
+    const x = locations[loc]['x'] * map.aCoords.tr.x;
+    const y = locations[loc]['y'] * map.aCoords.br.y;
     if (numAdded[loc] % 4 == 0) {
-      coords.push(locations[loc]["x"]);
-      coords.push(locations[loc]["y"] - 25);
+      coords.push(x);
+      coords.push(y - 25);
     }
     else if (numAdded[loc] % 4 == 1) {
-      coords.push(locations[loc]["x"] + 25);
-      coords.push(locations[loc]["y"]);
+      coords.push(x + 25);
+      coords.push(y);
     }
     else if (numAdded[loc] % 4 == 2) {
-      coords.push(locations[loc]["x"]);
-      coords.push(locations[loc]["y"] + 25);
+      coords.push(x);
+      coords.push(y + 25);
     }
     else {
-      coords.push(locations[loc]["x"] - 25);
-      coords.push(locations[loc]["y"]);
+      coords.push(x - 25);
+      coords.push(y);
     }
 
     numAdded[loc] = numAdded[loc] + 1;
@@ -102,11 +105,17 @@ function clearUnits() {
   }
 }
 
-canvas.on('object:modified', function(opt) {
+// DEBUG
+/*canvas.on('object:modified', function(opt) {
   var o = opt.target;
   var p = document.getElementById('unit_location');
-  p.innerText = "Position - X: " + o.get('left') + ", Y: " + o.get('top');
-});
+  var map = canvas.item(0);
+  var pL = o.get('left') / map.aCoords.tr.x;
+  var pT = o.get('top') / map.aCoords.br.y;
+  p.innerText = "Map\tW: " + map.aCoords.tr.x + ", H: " + map.aCoords.br.y + '\n' +
+    "Object\tL: " + o.get('left') + ", T: " + o.get('top') + '\n' +
+    "Percent\tX: " + pL + ", Y: " + pT;
+});*/
 
 canvas.renderAll();
 
