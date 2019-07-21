@@ -50,7 +50,7 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = 'none';
     signoutButton.style.display = 'inline-block';
-    buildTable();
+    //buildTable();
   } else {
     authorizeButton.style.display = 'inline-block';
     signoutButton.style.display = 'none';
@@ -69,44 +69,4 @@ function handleAuthClick(event) {
  */
 function handleSignoutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
-}
-
-function buildTable() {
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: '1aaeyLhODO9V4M-3H5tTeZVYp3AytwXuJIVgY0pkJkmQ',
-    range: 'Data!A:D',
-  }).then(function(response) {
-    var range = response.result;
-    if (range.values.length > 0) {
-      // Create table
-      var table = document.createElement("table");
-      var colCount = range.values[0].length;
-      table.id = "battle_table";
-
-      // Create header row
-      var hr = table.insertRow(-1);
-      for (var i = 0; i < colCount; i++) {
-        var cell = document.createElement("th");
-        cell.innerHTML = range.values[0][i];
-        hr.appendChild(cell);
-      }
-
-      // Populate data rows
-      for (var i = 1; i < range.values.length; i++) {
-        row = table.insertRow(-1);
-        for (var j = 0; j < colCount; j++) {
-          var cell = row.insertCell(-1);
-          cell.innerHTML = range.values[i][j];
-        }
-      }
-
-      // Insert table
-      var tableDiv = document.getElementById("table");
-      tableDiv.appendChild(table);
-    } else {
-      alert('No data found.');
-    }
-  }, function(response) {
-    alert('Error: ' + response.result.error.message);
-  });
 }

@@ -1,6 +1,7 @@
 function updateNotes() {
   var list = document.getElementById('notes_list');
   if (!list || !gapi.client || !gapi.client.sheets) {
+    console.log('Waiting for Google API...');
     setTimeout(updateNotes, 1000);
     return false;
   }
@@ -24,6 +25,8 @@ function updateNotes() {
       li.innerHTML = values[i][0];
       list.appendChild(li);
     }
+  }, function(response) {
+    alert('Error: ' + response.result.error.message);
   });
 
   updateTable();
@@ -32,6 +35,7 @@ function updateNotes() {
 function updateTable() {
   var table = document.getElementById("battle_table");
   if (!table) {
+    console.log('Waiting for table...');
     setTimeout(updateTable, 1000);
     return false;
   }
@@ -40,11 +44,13 @@ function updateTable() {
     range: 'Data!A:D'
   }).then(function(response) {
     var values = response.result.values;
+    var oldSize = table.rows.length;
+    var newSize = values.length;
     
     // Populate table
     let i;
-    for (i = 0; i < values.length; i++) {
-      if (i >= table.rows.length) table.insertRow(-1);
+    for (i = 0; i < newSize; i++) {
+      if (i >= oldSize) table.insertRow(-1);
       for (var j = 0; j < 4; j++) {
         if (!table.rows[i].cells[j]) table.rows[i].insertCell(-1);
         table.rows[i].cells[j].innerHTML = values[i][j];
@@ -52,7 +58,7 @@ function updateTable() {
     }
 
     // Clear empty rows
-    for (i; i < table.rows.length; i++) {
+    for (i; i < oldSize; i++) {
       table.deleteRow(i);
     }
 
@@ -73,20 +79,15 @@ function updateTable() {
           break;
       }
     }
+    updateMap(values);
   });
-
-  updateMap(table);
 }
 
-function updateMap(table) {
+function updateMap(values) {
   clearUnits();
-  const numRows = table.rows.length;
-  for (var i = 1; i < numRows; i++) {
-    addUnit(
-      table.rows[i].cells[0].innerHTML,
-      table.rows[i].cells[2].innerHTML,
-      table.rows[i].cells[1].innerHTML
-    );
+  const numUnits = values.length;
+  for (var i = 1; i < numUnits; i++) { // Remove header row
+    addUnit(values[i][0], values[i][2], values[i][1]);
   }
 
   setTimeout(updateNotes, 30*1000);

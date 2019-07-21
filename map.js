@@ -32,17 +32,7 @@ fabric.Image.fromURL('assets/map.jpg', function(img) {
 });
 
 // Add unit to canvas
-locations = {
-  "usmaps":{"x": 0.7492572016460906,"y": 0.18480821798241634},
-  "j2j3": {"x": 0.7654609053497943,"y": 0.23716470878276358},
-  "bullpond": {"x": 0.22950411522633743,"y": 0.645302405562203},
-  "range35": {"x": 0.5657524005486968,"y": 0.40653379367050974},
-  "range78": {"x": 0.5115195963158925,"y": 0.454123131462348},
-  "range11": {"x": 0.4670237115422299,"y": 0.522013965686974},
-  "kach": {"x": 0.7649660983735056,"y": 0.15701442982169628},
-  "usma": {"x": 0.8935987654320988,"y": 0.22249485968390037},
-  "buckner": {"x": 0.3481435185185185,"y": 0.5549084314443609},
-  "lrcmarne": {"x": 0.33191105499438833,"y": 0.6191618163322128}};
+locations = {"usmaps":{"x": 0.7492,"y": 0.1848},"j2j3": {"x": 0.7654,"y": 0.2371},"bullpond": {"x": 0.2295,"y": 0.6453},"range35": {"x": 0.5657,"y": 0.4065},"range78": {"x": 0.5115,"y": 0.4541},"range11": {"x": 0.4670,"y": 0.5220},"kach": {"x": 0.7649,"y": 0.1570},"usma": {"x": 0.8935,"y": 0.2224},"buckner": {"x": 0.3481,"y": 0.5549},"lrcmarne": {"x": 0.3319,"y": 0.6191}};
 numAdded = {"usmaps":0,"j2j3":0,"bullpond":0,"range35":0,"range78":0,"range11":0,"kach":0,"usma":0,"buckner":0,"lrcmarne":0};
 function addUnit(unit, location, number) {
   let color;
@@ -66,18 +56,18 @@ function addUnit(unit, location, number) {
     const y = locations[loc]['y'] * map.oCoords.br.y;
     if (numAdded[loc] % 4 == 0) {
       coords.push(x);
-      coords.push(y - 25);
+      coords.push(y - 15);
     }
     else if (numAdded[loc] % 4 == 1) {
-      coords.push(x + 25);
+      coords.push(x + 15);
       coords.push(y);
     }
     else if (numAdded[loc] % 4 == 2) {
       coords.push(x);
-      coords.push(y + 25);
+      coords.push(y + 15);
     }
     else {
-      coords.push(x - 25);
+      coords.push(x - 15);
       coords.push(y);
     }
 
