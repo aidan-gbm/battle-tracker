@@ -28,6 +28,7 @@ canvas.on('mouse:wheel', function(opt) {
 // Add map to canvas
 fabric.Image.fromURL('assets/map.jpg', function(img) {
   img.scaleToWidth(canvas.getWidth());
+  img.selectable = false;
   canvas.add(img);
 });
 
@@ -52,8 +53,8 @@ function addUnit(unit, location, number) {
   var loc = location.toLowerCase().replace(/[\s+\/]/g,'');
   if (locations.hasOwnProperty(loc)) {
     var map = canvas.item(0);
-    const x = locations[loc]['x'] * map.oCoords.tr.x;
-    const y = locations[loc]['y'] * map.oCoords.br.y;
+    const x = locations[loc]['x'] * map.aCoords.tr.x;
+    const y = locations[loc]['y'] * map.aCoords.br.y;
     if (numAdded[loc] % 4 == 0) {
       coords.push(x);
       coords.push(y - 15);
@@ -112,7 +113,8 @@ canvas.on('object:modified', function(opt) {
   var map = canvas.item(0);
   var pL = o.get('left') / map.aCoords.tr.x;
   var pT = o.get('top') / map.aCoords.br.y;
-  p.innerText = "Map\tW: " + map.aCoords.tr.x + ", H: " + map.aCoords.br.y + '\n' +
+  p.innerText = "DEBUG\n" +
+    "Map\tW: " + map.aCoords.tr.x + ", H: " + map.aCoords.br.y + '\n' +
     "Object\tL: " + o.get('left') + ", T: " + o.get('top') + '\n' +
     "Percent\tX: " + pL + ", Y: " + pT;
 });
