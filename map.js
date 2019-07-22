@@ -50,7 +50,11 @@ function addUnit(unit, location, number) {
     var map = canvas.item(0);
     const x = locations[loc]['x'] * map.aCoords.tr.x;
     const y = locations[loc]['y'] * map.aCoords.br.y;
-    if (numAdded[loc] % 4 == 0) {
+    if (color == "medic") {
+      coords.push(x);
+      coords.push(y);
+    }
+    else if (numAdded[loc] % 4 == 0) {
       coords.push(x);
       coords.push(y - 15);
     }
@@ -72,8 +76,10 @@ function addUnit(unit, location, number) {
     console.log('Error: ' + loc + ' doesn\'t exist!');
   }
 
+  var url;
   var group = [];
-  var url = "assets/" + color + "_" + size + ".svg";
+  if (unit == "Medic") url = "assets/medic.svg";
+  else url = "assets/" + color + "_" + size + ".svg";
   fabric.loadSVGFromURL(url,
     function(objects, options) {
       var shape = fabric.util.groupSVGElements(objects, options);

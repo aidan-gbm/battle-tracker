@@ -43,7 +43,8 @@ function updateTable() {
     spreadsheetId: '1aaeyLhODO9V4M-3H5tTeZVYp3AytwXuJIVgY0pkJkmQ',
     range: 'Data!A:D'
   }).then(function(response) {
-    var values = response.result.values;
+    var results = response.result.values;
+    var values = results.filter(x => x[0] != "Medic");
     var oldSize = table.rows.length;
     var newSize = values.length;
     
@@ -79,7 +80,7 @@ function updateTable() {
           break;
       }
     }
-    updateMap(values);
+    updateMap(results);
   });
 }
 

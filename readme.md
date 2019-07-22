@@ -8,4 +8,4 @@
 - Add medic units
 
 ## Last Update
-[#] Change sizing of units to scale to screen
+[+] Add medics
