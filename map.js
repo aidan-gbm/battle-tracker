@@ -36,12 +36,7 @@ fabric.Image.fromURL('assets/map.jpg', function(img) {
 locations = {"usmaps":{"x": 0.7492,"y": 0.1848},"j2j3": {"x": 0.7654,"y": 0.2371},"bullpond": {"x": 0.2295,"y": 0.6453},"range35": {"x": 0.5657,"y": 0.4065},"range78": {"x": 0.5115,"y": 0.4541},"range11": {"x": 0.4670,"y": 0.5220},"kach": {"x": 0.7649,"y": 0.1570},"usma": {"x": 0.8935,"y": 0.2224},"buckner": {"x": 0.3481,"y": 0.5549},"lrcmarne": {"x": 0.3319,"y": 0.6191}};
 numAdded = {"usmaps":0,"j2j3":0,"bullpond":0,"range35":0,"range78":0,"range11":0,"kach":0,"usma":0,"buckner":0,"lrcmarne":0};
 function addUnit(unit, location, number) {
-  let color;
-  if (unit == "BN") color = "rgba(0,255,0,1)";
-  else if (unit == "Anzio") color = "rgba(255,127,0,1)";
-  else if (unit == "Bastogne") color = "rgba(255,0,0,1)";
-  else if (unit == "Carentan") color = "rgba(0,0,255,1)";
-
+  let color = unit.toLowerCase();
   let size;
   if (number < 5) size = "team";
   else if (number < 13) size = "squad";
@@ -78,12 +73,12 @@ function addUnit(unit, location, number) {
   }
 
   var group = [];
-  var url = "assets/" + size + ".svg";
+  var url = "assets/" + color + "_" + size + ".svg";
   fabric.loadSVGFromURL(url,
     function(objects, options) {
       var shape = fabric.util.groupSVGElements(objects, options);
-      shape.setShadow("0px 0px 15px " + color);
-      shape.scaleToWidth(30);
+      shape.scaleToWidth(map.aCoords.tr.x * 0.02);
+      shape.setShadow("0px 0px 15px black");
       shape.left = coords[0];
       shape.top = coords[1];
       canvas.add(shape);

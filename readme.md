@@ -8,5 +8,4 @@
 - Add medic units
 
 ## Last Update
-[#] Fixed coordinate mapping of units
-[#] Increased notes font size
+[#] Change sizing of units to scale to screen
