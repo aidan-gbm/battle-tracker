@@ -6,4 +6,6 @@
 - Add location names
 
 ## Last Update
-[+] Add medics
+[+] Location labels
+[+] Re-added medic labels
+[-] Removed medics from units table

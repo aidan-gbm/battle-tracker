@@ -68,14 +68,14 @@ function loadCanvas() {
   let canvas = new fabric.Canvas('map_canvas', {
     width: window.innerWidth * 0.675,
     height: window.innerHeight * 0.65,
-    preserveObjectStacking: true
+    preserveObjectStacking: true,
+    hoverCursor: 'pointer'
   });
 
   // Add map to canvas
   fabric.Image.fromURL('assets/map.jpg', function(img) {
     img.scaleToWidth(canvas.getWidth());
     img.selectable = false;
-    img.id = id++;
     canvas.add(img);
   });
 
@@ -138,7 +138,7 @@ function loadData(id, unitRange, notesRange) {
     let values = response.result.values;
 
     loadUnits(values);
-    renderTable(values);
+    renderTable(values.filter(x => x[0] != 'Medic'));
   }, function(response) {
     alert('Error: ' + response.result.error.message);
     return false;
@@ -170,11 +170,10 @@ function loadData(id, unitRange, notesRange) {
  */
 function loadUnits(data) {
   // Check coordinates
+  let map = canvas.item(0);
   if (setLocs) {
-    let map = canvas.item(0);
     for (loc in locations) {
-      locations[loc]['coords'][0] *= map.aCoords.tr.x;
-      locations[loc]['coords'][1] *= map.aCoords.br.y;
+      setupLocation(loc, map);
     }
     setLocs = false;
   }
@@ -201,7 +200,10 @@ function loadUnits(data) {
       let setLoc = locations[loc];
       // Medic
       if (unit == 'Medic') {
-        setLoc['m'] = true;
+        if (!setLoc['m']) {
+          setLoc['m'] = true;
+          renderMedic(loc, map);
+        }
       }
 
       // Normal
@@ -226,13 +228,49 @@ function loadUnits(data) {
       }
     }
   }
-  renderUnits();
+  renderUnits(map);
+}
+
+/**
+ * Step 2a in the data update process.
+ * @param {String} name 
+ * @param {Object} map 
+ */
+function setupLocation(name, map) {
+  // Setup coordinates
+  locations[name]['coords'][0] *= map.aCoords.tr.x;
+  locations[name]['coords'][1] *= map.aCoords.br.y;
+
+  // Add label
+  let w = canvas.getWidth() * 0.025;
+  let rect = new fabric.Rect({
+    originX: 'center',
+    originY: 'center',
+    fill: 'white',
+    stroke: 'black',
+    width: w*2,
+    height: w/2
+  });
+
+  let text = new fabric.Text(name, {
+    fontSize: 8,
+    originX: 'center',
+    originY: 'center'
+  });
+
+  let group = new fabric.Group([rect, text], {
+    left: locations[name]['coords'][0] - w/2,
+    top: locations[name]['coords'][1] + w/2
+  });
+
+  canvas.add(group);
 }
 
 /**
  * Step 2b in the data update process.
+ * @param {Object} map
  */
-function renderUnits() {
+function renderUnits(map) {
   function renderUnit(unit, number, coords, id) {
     let size;
     if (number < 5) size = "team";
@@ -244,7 +282,7 @@ function renderUnits() {
     fabric.loadSVGFromURL(url,
       function(objects, options) {
         let shape = fabric.util.groupSVGElements(objects, options);
-        shape.scaleToWidth(canvas.getWidth() * 0.025);
+        shape.scaleToWidth(map.aCoords.tr.x * 0.025);
         shape.setShadow('0px 0px 15px black');
         shape.left = coords[0];
         shape.top = coords[1];
@@ -264,12 +302,10 @@ function renderUnits() {
         // Render unit
         if (nums[num]['refresh']) {
           let coords = locations[loc]['coords'];
-          let xy = [coords[0] - shift * count, coords[1]];
+          let xy = [coords[0] - shift * count - 45, coords[1] + 8];
           if (!nums[num].hasOwnProperty('objId')) {
             nums[num]['objId'] = id;
-            renderUnit(unit, num, coords, id++);
-            //console.log("set objId to: " + nums[num]['objId']);
-            //console.log("Adding " + unit + " " + num + " at " + coords + ", " + loc);
+            renderUnit(unit, num, xy, id++);
           } else {
             let obj = getObjectById(nums[num]['objId']);
             canvas.bringToFront(obj);
@@ -287,6 +323,25 @@ function renderUnits() {
       }
     }
   }
+}
+
+/**
+ * Step 2c in the data update process.
+ * @param {String} location 
+ */
+function renderMedic(location, map) {
+  let url = 'assets/medic.svg';
+  fabric.loadSVGFromURL(url,
+    function(objects, options) {
+      let shape = fabric.util.groupSVGElements(objects, options);
+      shape.scaleToWidth(map.aCoords.tr.x * 0.02);
+      shape.setShadow('0px 0px 15px black');
+      shape.left = locations[location]['coords'][0] + 45;
+      shape.top = locations[location]['coords'][1] + 12;
+      canvas.add(shape);
+      canvas.renderAll();
+    }
+  );
 }
 
 /**
