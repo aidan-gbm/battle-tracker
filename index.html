@@ -22,19 +22,19 @@
         <table id="battle_table"></table>
         <h2>Notes</h2>
         <ul id="notes_list"></ul>
-        <script src="google.js"></script>
       </div>
 
       <div class="column-right">
         <canvas id="map_canvas"></canvas>
-        <script src="map.js"></script>
         <p id="unit_location"></p>
       </div>
     </div>
 
-    <script src="update.js"></script>
+    <script src="google.js"></script>
+    <script src="battle-tracker.js"></script>
     <script async defer src="https://apis.google.com/js/api.js"
-      onload="this.onload=handleClientLoad();updateNotes()">
+      onload="this.onload=function(){};handleClientLoad();runTracker('1aaeyLhODO9V4M-3H5tTeZVYp3AytwXuJIVgY0pkJkmQ');"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
     </script>
   </body>
 </html>

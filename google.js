@@ -9,8 +9,11 @@ var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"
 // included, separated by spaces.
 var SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
-var authorizeButton = document.getElementById('authorize_button');
-var signoutButton = document.getElementById('signout_button');
+var authorizeButton, signoutButton;
+while (!(authorizeButton || signoutButton)) {
+  authorizeButton = document.getElementById('authorize_button');
+  signoutButton = document.getElementById('signout_button');
+}
 
 /**
  *  On load, called to load the auth2 library and API client library.
