@@ -2,10 +2,10 @@
 
 ## TODO
 - Add color to notes section
+- Re-organize labels
 - Add AO circles
-- Add location names
 
 ## Last Update
-[+] Location labels
-[+] Re-added medic labels
-[-] Removed medics from units table
+- [+] Location labels
+- [+] Re-added medic labels
+- [-] Removed medics from units table
