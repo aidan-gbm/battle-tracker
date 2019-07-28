@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .header {
@@ -10,6 +11,44 @@ body {
 
   display: inline-block;
   text-align: center;
+}
+
+.header-left {
+  height: 100px;
+  width: 25%;
+  float: left;
+}
+
+.header-left img {
+  padding-top: 10px;
+  height: 80px;
+}
+
+.header-center {
+  height: 100px;
+  width: 50%;
+  float: left;
+}
+
+.header-center h1 {
+  padding-top: 10px;
+  font-size: 70px;
+}
+
+.header-right {
+  height: 100px;
+  padding-top: 10px;
+  width: 25%;
+  float: left;
+}
+
+.header-right button {
+  height: 30px;
+  margin-top: 25px;
+  margin-bottom: 55px;
+  background-color: rgb(66, 66, 66);
+  border: 2px solid gray;
+  color: white;
 }
 
 h1 {
@@ -41,6 +80,7 @@ table {
 h2 {
   font-size: 2vw;
   text-align: center;
+  margin-top: 0;
 }
 
 ul li {

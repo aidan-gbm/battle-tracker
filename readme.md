@@ -3,9 +3,10 @@
 ## TODO
 - Add color to notes section
 - Re-organize labels
-- Add AO circles
+- Test MS Flows w/ REST API
+- Add map scroll/zoom buttons
 
 ## Last Update
-- [+] Location labels
-- [+] Re-added medic labels
-- [-] Removed medics from units table
+- [+] Add logo
+- [#] Change fonts
+- [#] Organize header
