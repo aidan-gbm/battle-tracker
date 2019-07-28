@@ -63,6 +63,12 @@ h1 {
   margin: 2.5%;
 }
 
+.map_buttons {
+  margin: none;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
 .column-right {
   float: left;
   width: 67.5%;
@@ -80,7 +86,8 @@ table {
 h2 {
   font-size: 2vw;
   text-align: center;
-  margin-top: 0;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 ul li {

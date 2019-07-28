@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.2.0/fabric.min.js"></script>
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="main.css">
@@ -33,6 +34,14 @@
       </div>
 
       <div class="column-right">
+        <div class="map_buttons">
+          <button id="zoomIn">+</button>
+          <button id="zoomOut">-</button>
+          <button id="panLeft">&larr;</button>
+          <button id="panRight">&rarr;</button>
+          <button id="panUp">&uarr;</button>
+          <button id="panDown">&darr;</button>
+        </div>
         <canvas id="map_canvas"></canvas>
         <p id="unit_location"></p>
       </div>

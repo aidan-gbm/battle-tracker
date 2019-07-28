@@ -14,8 +14,45 @@ class Location {
   }
 }
 
+// Global Variables
 let setLocs = true;
 let canvas, locations, id = 0;
+
+// Zoom Functionality
+$(function() {
+  $('#zoomIn').click(function() {
+    canvas.zoomToPoint(new fabric.Point(canvas.width/2,canvas.height/2), Math.min(canvas.getZoom() * 1.1, 20));
+  });
+
+  $('#zoomOut').click(function() {
+    canvas.zoomToPoint(new fabric.Point(canvas.width/2,canvas.height/2), Math.max(canvas.getZoom() / 1.05, 1));
+  });
+
+  $('#panRight').click(function() {
+    let units = canvas.item(0).aCoords.tr.x / 100;
+    let delta = new fabric.Point(-units, 0);
+    canvas.relativePan(delta);
+  });
+
+  $('#panLeft').click(function() {
+    let units = canvas.item(0).aCoords.tr.x / 100;
+    let delta = new fabric.Point(units, 0);
+    canvas.relativePan(delta);
+  });
+
+  $('#panUp').click(function() {
+    let units = canvas.item(0).aCoords.br.y / 100;
+    let delta = new fabric.Point(0, units);
+    canvas.relativePan(delta);
+  });
+
+  $('#panDown').click(function() {
+    let units = canvas.item(0).aCoords.br.y / 100;
+    let delta = new fabric.Point(0, -units);
+    canvas.relativePan(delta);
+  });
+});
+
 function runTracker(spreadsheetId) {
   /**
    * EXAMPLE: Anzio, 3, USMAPS
@@ -69,7 +106,7 @@ function loadCanvas() {
     width: window.innerWidth * 0.675,
     height: window.innerHeight * 0.65,
     preserveObjectStacking: true,
-    hoverCursor: 'pointer'
+    hoverCursor: 'default'
   });
 
   // Add map to canvas
@@ -77,24 +114,6 @@ function loadCanvas() {
     img.scaleToWidth(canvas.getWidth());
     img.selectable = false;
     canvas.add(img);
-  });
-
-  // Set zoom functionality
-  canvas.on('mouse:wheel', function(act) {
-    let delta = -(act.e.deltaY / 200);
-    let zoom = canvas.getZoom();
-
-    zoom = zoom + delta;
-    if (zoom > 20) zoom = 20;
-    else if (zoom < 1) zoom = 1;
-
-    canvas.zoomToPoint({
-      x: act.e.offsetX,
-      y: act.e.offsetY
-    }, zoom);
-
-    act.e.preventDefault();
-    act.e.stopPropagation();
   });
 
   // DEBUG
@@ -416,6 +435,10 @@ function renderNotes(title, items) {
   for (i = 0; i < newLen; i++) {
     var li = document.createElement('li');
     li.innerHTML = items[i][0];
+    if (li.innerHTML.includes('BN')) li.style.color = 'rgba(0,200,0,.8)';
+    else if (li.innerHTML.includes('Anzio')) li.style.color = 'rgba(255,127,0,.8)';
+    else if (li.innerHTML.includes('Bastogne')) li.style.color = 'rgba(255,0,0,.8)';
+    else if (li.innerHTML.includes('Carentan')) li.style.color = 'rgba(0,0,255,.8)';
     list.appendChild(li);
   }
 }
