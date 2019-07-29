@@ -1,9 +1,11 @@
 # Battle Tracker
 
 ## TODO
-- Re-organize labels
-- Test MS Flows w/ REST API
+- Organize labels
+- Display units on interior side
 
 ## Last Update
-- [+] Add map scroll/zoom buttons
-- [+] Add color to notes section
+- [#] Switch to crucible branch
+- [#] Modify header text
+- [#] Change map to crucible AO
+- [#] Update locations

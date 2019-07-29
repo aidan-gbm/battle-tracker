@@ -60,27 +60,22 @@ function runTracker(spreadsheetId) {
    *   coords: [],
    *   m: false,
    *   units: {
-   *     'Anzio': {
-   *       3: { refresh: true, objId: 1 }
-   *     }
+   *     'A/1/1': { refresh: true, objId: 1 }
    *   }
    * }
    */
   locations = {
-    'USMAPS':     {coords:[0.7492,0.1848],m:false,units:{}},
-    'J2/J3':      {coords:[0.7654,0.2371],m:false,units:{}},
-    'Bull Pond':  {coords:[0.2295,0.6453],m:false,units:{}},
-    'Range 3/5':  {coords:[0.5657,0.4065],m:false,units:{}},
-    'Range 7/8':  {coords:[0.5115,0.4541],m:false,units:{}},
-    'Range 11':   {coords:[0.4670,0.5220],m:false,units:{}},
-    'KACH':       {coords:[0.7649,0.1570],m:false,units:{}},
-    'USMA':       {coords:[0.8935,0.2224],m:false,units:{}},
-    'Buckner':    {coords:[0.3481,0.5549],m:false,units:{}},
-    'LRC/Marne':  {coords:[0.3319,0.6191],m:false,units:{}}
+    'USMAPS':       {coords:[0.6675,0.0836],m:false,units:{}},
+    'J2/J3':        {coords:[0.6970,0.1898],m:false,units:{}},
+    'Range 11':     {coords:[0.2160,0.7805],m:false,units:{}},
+    'LZ Owl':       {coords:[0.0634,0.8744],m:false,units:{}},
+    'River Courts': {coords:[0.9278,0.2072],m:false,units:{}},
+    'Arvin':        {coords:[0.8569,0.1700],m:false,units:{}},
+    'Cemetery':     {coords:[0.7988,0.0963],m:false,units:{}}
   }
 
   canvas = loadCanvas();
-  loadData(spreadsheetId, 'Data!A:D', 'Notes!A:A');
+  loadData(spreadsheetId, 'Crucible!A:C', 'Notes!A:A');
 }
 
 /**
@@ -103,15 +98,15 @@ function getObjectById(id) {
 function loadCanvas() {
   // Create canvas object
   let canvas = new fabric.Canvas('map_canvas', {
-    width: window.innerWidth * 0.675,
-    height: window.innerHeight * 0.65,
+    width: window.innerWidth * 0.607,
+    height: window.innerHeight * 0.8,
     preserveObjectStacking: true,
     hoverCursor: 'default'
   });
 
   // Add map to canvas
-  fabric.Image.fromURL('assets/map.jpg', function(img) {
-    img.scaleToWidth(canvas.getWidth());
+  fabric.Image.fromURL('assets/ao_morgan.png', function(img) {
+    img.scaleToHeight(canvas.getHeight());
     img.selectable = false;
     canvas.add(img);
   });
@@ -153,7 +148,7 @@ function loadData(id, unitRange, notesRange) {
     spreadsheetId: id,
     range: unitRange
   }).then(function(response) {
-    // Array of Arrays => [Unit, # PAX, Location, Time]
+    // Array of Arrays => [Unit, Location, SP Time]
     let values = response.result.values;
 
     loadUnits(values);
@@ -184,7 +179,7 @@ function loadData(id, unitRange, notesRange) {
 
 /**
  * Step 2 in the data update process.
- * Formatted as: [Unit, #PAX, Location, Time]
+ * Formatted as: [Unit, Location, SP Time]
  * @param {Array} data array of arrays
  */
 function loadUnits(data) {
@@ -201,10 +196,7 @@ function loadUnits(data) {
   for (loc in locations) {
     let units = locations[loc]['units'];
     for (unit in units) {
-      let nums = units[unit];
-      for (num in nums) {
-        nums[num]['refresh'] = false;
-      }
+      units[unit]['refresh'] = false;
     }
   }
 
@@ -212,12 +204,12 @@ function loadUnits(data) {
   let numUnits = data.length;
   for (let i = 0; i < numUnits; i++) {
     let unit = data[i][0];
-    let num = data[i][1];
-    let loc = data[i][2];
+    let loc = data[i][1];
 
     if (locations.hasOwnProperty(loc)) {
       let setLoc = locations[loc];
-      // Medic
+
+      // Handle Medics
       if (unit == 'Medic') {
         if (!setLoc['m']) {
           setLoc['m'] = true;
@@ -225,24 +217,15 @@ function loadUnits(data) {
         }
       }
 
-      // Normal
       else {
         // Unit present at location
         if (setLoc['units'].hasOwnProperty(unit)) {
-          let setUnit = setLoc['units'][unit];
-          // Size present at location
-          if (setUnit.hasOwnProperty(num)) {
-            setUnit[num]['refresh'] = true;
-          }
-          // Size not present at location
-          else {
-            setUnit[num] = { refresh: true }
-          }
+          setLoc['units'][unit]['refresh'] = true;
         }
+
         // Unit not present at location
         else {
-          setLoc['units'][unit] = {};
-          setLoc['units'][unit][num] = { refresh: true };
+          setLoc['units'][unit] = { refresh: true };
         }
       }
     }
@@ -290,14 +273,12 @@ function setupLocation(name, map) {
  * @param {Object} map
  */
 function renderUnits(map) {
-  function renderUnit(unit, number, coords, id) {
-    let size;
-    if (number < 5) size = "team";
-    else if (number < 13) size = "squad";
-    else if (number < 25) size = "section";
-    else if (number < 45) size = "platoon";
-    else size = "company";
-    let url = 'assets/' + unit.toLowerCase() + '_' + size.toString() + '.svg';
+  function renderUnit(unit, coords, id) {
+    let company;
+    if (unit.charAt(0) == 'A') company = 'anzio';
+    else if (unit.charAt(0) == 'B') company = 'bastogne';
+    else company = 'carentan';
+    let url = 'assets/squad_' + company + '.svg';
     fabric.loadSVGFromURL(url,
       function(objects, options) {
         let shape = fabric.util.groupSVGElements(objects, options);
@@ -316,29 +297,26 @@ function renderUnits(map) {
     let units = locations[loc]['units'];
     let count = 0, shift = 15;
     for (unit in units) {
-      let nums = units[unit];
-      for (num in nums) {
-        // Render unit
-        if (nums[num]['refresh']) {
-          let coords = locations[loc]['coords'];
-          let xy = [coords[0] - shift * count - 45, coords[1] + 8];
-          if (!nums[num].hasOwnProperty('objId')) {
-            nums[num]['objId'] = id;
-            renderUnit(unit, num, xy, id++);
-          } else {
-            let obj = getObjectById(nums[num]['objId']);
-            canvas.bringToFront(obj);
-            obj.left = xy[0];
-            obj.top = xy[1];
-          }
-          count++;
+      // Render unit
+      if (units[unit]['refresh']) {
+        let coords = locations[loc]['coords'];
+        let xy = [coords[0] - shift * count - 45, coords[1] + 8];
+        if (!units[unit].hasOwnProperty('objId')) {
+          units[unit]['objId'] = id;
+          renderUnit(unit, xy, id++);
+        } else {
+          let obj = getObjectById(units[unit]['objId']);
+          canvas.bringToFront(obj);
+          obj.left = xy[0];
+          obj.top = xy[1];
         }
-        // Delete unit
-        else {
-          let obj = getObjectById(nums[num]['objId']);
-          canvas.remove(obj);
-          delete nums[num];
-        }
+        count++;
+      }
+      // Delete unit
+      else {
+        let obj = getObjectById(units[unit]['objId']);
+        canvas.remove(obj);
+        delete units[unit];
       }
     }
   }
@@ -365,7 +343,7 @@ function renderMedic(location, map) {
 
 /**
  * Step 3 in the data update process.
- * Formatted as: [Unit, #PAX, Location, Time]
+ * Formatted as: [Unit, Location, SP Time]
  * @param {Array} data Rows of the table
  */
 function renderTable(data) {
@@ -381,7 +359,7 @@ function renderTable(data) {
   let i;
   for (i = 0; i < newSize; i++) {
     if (i >= oldSize) table.insertRow(-1);
-    for (var j = 0; j < 4; j++) {
+    for (var j = 0; j < 3; j++) {
       if (!table.rows[i].cells[j]) table.rows[i].insertCell(-1);
       table.rows[i].cells[j].innerHTML = data[i][j];
     }
@@ -394,18 +372,17 @@ function renderTable(data) {
 
   // Add color
   for (i = 0; i < newSize; i++) {
-    switch(table.rows[i].cells[0].innerHTML) {
-      case "BN":
-        table.rows[i].style.backgroundColor = 'rgba(0,255,0,.5)';
-        break;
-      case "Anzio":
+    switch(table.rows[i].cells[0].innerHTML.charAt(0)) {
+      case 'A':
         table.rows[i].style.backgroundColor = 'rgba(255,127,0,.5)';
         break;
-      case "Bastogne":
+      case 'B':
         table.rows[i].style.backgroundColor = 'rgba(255,0,0,.5)';
         break;
-      case "Carentan":
+      case 'C':
         table.rows[i].style.backgroundColor = 'rgba(0,0,255,.5)';
+        break;
+      default:
         break;
     }
   }
