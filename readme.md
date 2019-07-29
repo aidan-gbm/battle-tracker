@@ -3,9 +3,8 @@
 ## TODO
 - Organize labels
 - Display units on interior side
+- Move units table to left panel
 
 ## Last Update
-- [#] Switch to crucible branch
-- [#] Modify header text
-- [#] Change map to crucible AO
-- [#] Update locations
+- [-] Remove zoom functionality
+- [#] Move table & notes to left

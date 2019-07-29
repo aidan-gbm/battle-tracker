@@ -18,41 +18,6 @@ class Location {
 let setLocs = true;
 let canvas, locations, id = 0;
 
-// Zoom Functionality
-$(function() {
-  $('#zoomIn').click(function() {
-    canvas.zoomToPoint(new fabric.Point(canvas.width/2,canvas.height/2), Math.min(canvas.getZoom() * 1.1, 20));
-  });
-
-  $('#zoomOut').click(function() {
-    canvas.zoomToPoint(new fabric.Point(canvas.width/2,canvas.height/2), Math.max(canvas.getZoom() / 1.05, 1));
-  });
-
-  $('#panRight').click(function() {
-    let units = canvas.item(0).aCoords.tr.x / 100;
-    let delta = new fabric.Point(-units, 0);
-    canvas.relativePan(delta);
-  });
-
-  $('#panLeft').click(function() {
-    let units = canvas.item(0).aCoords.tr.x / 100;
-    let delta = new fabric.Point(units, 0);
-    canvas.relativePan(delta);
-  });
-
-  $('#panUp').click(function() {
-    let units = canvas.item(0).aCoords.br.y / 100;
-    let delta = new fabric.Point(0, units);
-    canvas.relativePan(delta);
-  });
-
-  $('#panDown').click(function() {
-    let units = canvas.item(0).aCoords.br.y / 100;
-    let delta = new fabric.Point(0, -units);
-    canvas.relativePan(delta);
-  });
-});
-
 function runTracker(spreadsheetId) {
   /**
    * EXAMPLE: Anzio, 3, USMAPS

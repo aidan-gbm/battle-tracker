@@ -9,44 +9,51 @@
     <meta charset="utf-8" />
   </head>
   <body>
+
+    <!-- HEADER -->
     <div class="header">
+
+      <!-- LEFT HEADER -->
       <div class="header-left">
         <img src="assets/logo-anatomically-correct.png" alt="CCBT Logo">
       </div>
 
+      <!-- CENTER HEADER -->
       <div class="header-center">
           <h1>Crucible Tracker</h1>
       </div>
 
+      <!-- RIGHT HEADER -->
       <div class="header-right">
-        <!--Add buttons to initiate auth sequence and sign out-->
         <button id="authorize_button" style="display: none;">Authorize</button>
         <button id="signout_button" style="display: none;">Sign Out</button>
       </div>
+
     </div>
 
+    <!-- CONTENT -->
     <div class="content">
-      <div class="column-left">
-        <h2>Units</h2>
-        <table id="battle_table"></table>
+
+      <!-- LEFT PANEL -->
+      <div id="panel-left" class="panel-left">
+        <a href="javascript:void(0)" class="closebtn" onclick="closePanel('panel-left')">&times;</a>
         <h2>Notes</h2>
         <ul id="notes_list"></ul>
+        <h2>Units</h2>
+        <table id="battle_table"></table>
       </div>
 
-      <div class="column-right">
-        <div class="map_buttons">
-          <button id="zoomIn">+</button>
-          <button id="zoomOut">-</button>
-          <button id="panLeft">&larr;</button>
-          <button id="panRight">&rarr;</button>
-          <button id="panUp">&uarr;</button>
-          <button id="panDown">&darr;</button>
-        </div>
+      <!-- MAIN PAGE -->
+      <div id="main">
+        <button onclick="openPanel('panel-left')">Open</button>
         <canvas id="map_canvas"></canvas>
         <p id="unit_location"></p>
       </div>
+
     </div>
 
+    <!-- SCRIPTS -->
+    <script src="panel.js"></script>
     <script src="google.js"></script>
     <script src="battle-tracker.js"></script>
     <script async defer src="https://apis.google.com/js/api.js"
