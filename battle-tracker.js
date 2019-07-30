@@ -40,7 +40,7 @@ function runTracker(spreadsheetId) {
   }
 
   canvas = loadCanvas();
-  loadData(spreadsheetId, 'Crucible!A:C', 'Notes!A:A');
+  loadData(spreadsheetId, 'Crucible!A:C', 'Notes!A:A', 'ExCheck!A:F');
 }
 
 /**
@@ -62,9 +62,10 @@ function getObjectById(id) {
  */
 function loadCanvas() {
   // Create canvas object
+  let h = window.innerHeight * 0.85;
   let canvas = new fabric.Canvas('map_canvas', {
-    width: window.innerWidth * 0.607,
-    height: window.innerHeight * 0.8,
+    height: h,
+    width: h * 1.5,
     preserveObjectStacking: true,
     hoverCursor: 'default'
   });
@@ -100,11 +101,12 @@ function loadCanvas() {
  * @param {String} id id of the spreadsheet
  * @param {String} unitRange range for the unit tab
  * @param {String} notesRange range for the notes tab 
+ * @param {String} excheckRange range for the excheck tab
  */
-function loadData(id, unitRange, notesRange) {
+function loadData(id, unitRange, notesRange, excheckRange) {
   // Wait for Google Sheets API to load
   if (!gapi.client || !gapi.client.sheets) {
-    setTimeout(loadData, 1000, id, unitRange, notesRange);
+    setTimeout(loadData, 1000, id, unitRange, notesRange, excheckRange);
     return false;
   }
 
@@ -138,8 +140,22 @@ function loadData(id, unitRange, notesRange) {
     return false;
   });
 
+  // GET request for excheck data
+  gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: id,
+    range: excheckRange
+  }).then(function(response) {
+    // List of notes items
+    let values = response.result.values;
+
+    renderExcheck(values);
+  }, function(response) {
+    alert('Error: ' + response.result.error.message);
+    return false;
+  });
+
   // Update every 30 seconds
-  setTimeout(loadData, 30*1000, id, unitRange, notesRange);
+  setTimeout(loadData, 30*1000, id, unitRange, notesRange, excheckRange);
 }
 
 /**
@@ -382,5 +398,51 @@ function renderNotes(title, items) {
     else if (li.innerHTML.includes('Bastogne')) li.style.color = 'rgba(255,0,0,.8)';
     else if (li.innerHTML.includes('Carentan')) li.style.color = 'rgba(0,0,255,.8)';
     list.appendChild(li);
+  }
+}
+
+/**
+ * Step 5 in the data update process.
+ * Formatted as: [Category, Line #, Proword, Planned Time, Actual Time, Event]
+ * @param {Array} data Rows of the table
+ */
+function renderExcheck(data) {
+  let table = document.getElementById('excheck_table');
+  if (!table) {
+    setTimeout(renderTable, 1000, data);
+    return false;
+  }
+  let oldSize = table.rows.length;
+  let newSize = data.length;
+
+  // Populate table
+  let i;
+  for (i = 0; i < newSize; i++) {
+    if (i >= oldSize) table.insertRow(-1);
+    for (var j = 0; j < 6; j++) {
+      if (!table.rows[i].cells[j]) table.rows[i].insertCell(-1);
+      if (data[i][j]) table.rows[i].cells[j].innerHTML = data[i][j];
+    }
+  }
+
+  // Clear empty rows
+  for (i; i < oldSize; i++) {
+    table.deleteRow(i);
+  }
+
+  // Add color
+  let time = new Date();
+  let nowtime = time.getHours().toString() + time.getMinutes();
+  for (i = 0; i < newSize; i++) {
+    let duetime = table.rows[i].cells[3].innerHTML;
+    if (duetime < nowtime) {
+      console.log("Duetime: " + duetime + "\nNowtime: " + nowtime);
+      table.rows[i].style.fontWeight = 'bold';
+      table.rows[i].style.backgroundColor = '#FF0000';
+    }
+    if (i > 0 && table.rows[i].cells[4].innerHTML) {
+      table.rows[i].style.fontWeight = 'bold';
+      table.rows[i].style.backgroundColor = '#FFFF00';
+    }
   }
 }

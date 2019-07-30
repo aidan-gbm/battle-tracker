@@ -1,9 +1,17 @@
-function openPanel(id) {
-  document.getElementById(id).style.width = '30%';
-  //document.getElementById('main').style.marginLeft = '25%';
+function openLeftPanel() {
+  document.getElementById('panel-left').style.width = '25vw';
+  document.getElementById('main').style.marginLeft = '25vw';
 }
 
-function closePanel(id) {
-  document.getElementById(id).style.width = '0';
-  //document.getElementById('main').style.marginLeft = '0';
+function closeLeftPanel() {
+  document.getElementById('panel-left').style.width = '0';
+  document.getElementById('main').style.marginLeft = '0';
+}
+
+function openRightPanel() {
+  document.getElementById('panel-right').style.width = '75vw';
+}
+
+function closeRightPanel() {
+  document.getElementById('panel-right').style.width = '0';
 }

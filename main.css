@@ -3,9 +3,13 @@ body {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+/***************************/
+/*          HEADER         */
+/***************************/
+
 .header {
-  width: 100%;
-  height: 100px;
+  width: 100vw;
+  height: 10vh;
   background-color: black;
   color: white;
 
@@ -14,93 +18,65 @@ body {
 }
 
 .header-left {
-  height: 100px;
-  width: 25%;
+  height: 10vh;
+  width: 25vw;
   float: left;
 }
 
 .header-left img {
-  padding-top: 10px;
-  height: 80px;
+  padding-top: 1vh;
+  height: 8vh;
 }
 
 .header-center {
-  height: 100px;
-  width: 50%;
+  height: 10vh;
+  width: 50vw;
   float: left;
 }
 
 .header-center h1 {
-  padding-top: 10px;
-  font-size: 70px;
+  margin: none;
+  margin-top: 1vh;
+  font-size: 6vh;
 }
 
 .header-right {
-  height: 100px;
-  padding-top: 10px;
-  width: 25%;
+  height: 10vh;
+  width: 25vw;
   float: left;
 }
 
 .header-right button {
-  height: 30px;
-  margin-top: 25px;
-  margin-bottom: 55px;
+  height: 3vh;
+  margin-top: 3.5vh;
+  margin-bottom: 3.5vh;
   background-color: rgb(66, 66, 66);
   border: 2px solid gray;
   color: white;
 }
 
+/***************************/
+/*        SCROLLBAR        */
+/***************************/
+
 ::-webkit-scrollbar {
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar-track {
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: rgb(56, 56, 56);
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
-.panel-left {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  transition: 0.5s;
-}
-
-.panel-left a {
-  text-decoration: none;
-  font-size: 50px;
-  padding-top: 25px;
-  padding-left: 48%;
-  color: #818181;
-  transition: 0.3s;
-}
-
-.panel-left a:hover {
-  color: #f1f1f1;
-}
-
-#main {
-  transition: margin-left .5s;
-  padding: 20px;
-}
-
-h1 {
-  margin: 0;
-  margin-bottom: 10px;
-  width: 100%;
-}
+/***************************/
+/*       ALL PANELS        */
+/***************************/
 
 h2 {
   color: lightgray;
@@ -114,16 +90,8 @@ table {
   border-collapse: collapse;
   align-self: center;
   font-size: .9vw;
-  width: 90%;
-  margin-left: 5%;
   margin-bottom: 20px;
-}
-
-ul li {
-  font-size: 1vw;
-  color: lightgray;
-  width: 90%;
-  margin-left: 5%;
+  background-color: white;
 }
 
 td, th {
@@ -132,16 +100,133 @@ td, th {
   padding: 5px;
 }
 
-tr:first-child {
+/***************************/
+/*         L PANEL         */
+/***************************/
+
+.panel-left {
+  position: fixed;
+  height: 100vh;
+  width: 0;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.panel-left a {
+  display: block;
+  text-decoration: none;
+  font-size: 5vh;
+  padding-left: 12vw;
+  color: #818181;
+  transition: 0.3s;
+}
+
+.panel-left a:hover {
+  color: #f1f1f1;
+}
+
+.panel-left table {
+  width: 21vw;
+  margin-left: 2vw;
+}
+
+ul li {
+  font-size: 1vw;
+  color: lightgray;
+  width: 21vw;
+  margin-left: 2vw;
+}
+
+.panel-left tr:first-child {
   background-color: #363636;
   color: white;
 }
 
-#map_canvas {
-  display: block;
-  border: 1px solid black;
+/***************************/
+/*         R PANEL         */
+/***************************/
+
+.panel-right {
+  position: fixed;
+  height: 100vh;
+  width: 0;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
 }
 
-.unit_menu {
-  margin-top: 10px;
+.panel-right a {
+  display: block;
+  text-decoration: none;
+  font-size: 5vh;
+  padding-left: 37vw;
+  color: #818181;
+  transition: 0.3s;
+}
+
+.panel-right a:hover {
+  color: #f1f1f1;
+}
+
+.panel-right table {
+  width: 71vw;
+  margin-left: 2vw;
+}
+
+.panel-right tr:first-child {
+  background-color: #0B5394;
+  color: white;
+}
+
+.panel-right tr:nth-child(even) {
+  background-color: #E8F0FE;
+}
+
+/***************************/
+/*           MAIN          */
+/***************************/
+
+#main {
+  transition: margin-left .5s;
+  padding: 2vw;
+}
+
+.left-button {
+  float: left;
+  margin-right: 1vw;
+  height: 85vh;
+  background-color: rgb(66, 66, 66);
+  border: 3px solid gray;
+  color: white;
+  outline: none;
+}
+
+.left-button:active {
+  background-color: gray;
+}
+
+.right-button {
+  float: left;
+  margin-left: 1vw;
+  height: 85vh;
+  background-color: rgb(66, 66, 66);
+  border: 3px solid gray;
+  color: white;
+}
+
+.right-button:active {
+  background-color: gray;
+}
+
+.canvas-container {
+  float: left;
+  margin: none;
+  border: 1px solid black;
 }

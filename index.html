@@ -36,7 +36,7 @@
 
       <!-- LEFT PANEL -->
       <div id="panel-left" class="panel-left">
-        <a href="javascript:void(0)" class="closebtn" onclick="closePanel('panel-left')">&times;</a>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeLeftPanel()">&times;</a>
         <h2>Notes</h2>
         <ul id="notes_list"></ul>
         <h2>Units</h2>
@@ -45,9 +45,17 @@
 
       <!-- MAIN PAGE -->
       <div id="main">
-        <button onclick="openPanel('panel-left')">Open</button>
+        <button class="left-button" onclick="openLeftPanel()"><span style="writing-mode: vertical-rl;">Show Units</span></button>
         <canvas id="map_canvas"></canvas>
+        <button class="right-button" onclick="openRightPanel()"><span style="writing-mode: vertical-rl">Show ExCheck</span></button>
         <p id="unit_location"></p>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div id="panel-right" class="panel-right">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeRightPanel()">&times;</a>
+        <h2>Execution Checklist</h2>
+        <table id="excheck_table"></table>
       </div>
 
     </div>
