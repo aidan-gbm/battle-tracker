@@ -12,14 +12,13 @@ body {
   height: 10vh;
   background-color: black;
   color: white;
-
   display: inline-block;
   text-align: center;
 }
 
 .header-left {
   height: 10vh;
-  width: 25vw;
+  width: 25%;
   float: left;
 }
 
@@ -30,7 +29,7 @@ body {
 
 .header-center {
   height: 10vh;
-  width: 50vw;
+  width: 50%;
   float: left;
 }
 
@@ -42,7 +41,7 @@ body {
 
 .header-right {
   height: 10vh;
-  width: 25vw;
+  width: 25%;
   float: left;
 }
 

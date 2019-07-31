@@ -432,10 +432,10 @@ function renderExcheck(data) {
 
   // Add color
   let time = new Date();
-  let nowtime = time.getHours().toString() + time.getMinutes();
+  let nowtime = time.getHours().toString() + time.getMinutes().toString();
   for (i = 0; i < newSize; i++) {
     let duetime = table.rows[i].cells[3].innerHTML;
-    if (duetime < nowtime) {
+    if (parseInt(duetime) < parseInt(nowtime)) {
       console.log("Duetime: " + duetime + "\nNowtime: " + nowtime);
       table.rows[i].style.fontWeight = 'bold';
       table.rows[i].style.backgroundColor = '#FF0000';
